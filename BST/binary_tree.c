@@ -17,7 +17,15 @@ int main(int argc, char *argv[])
 	get_nearest_leaf_down(cur_node, &leaf_dist);
 	printf("Leaf dist in subtree for node %s is %d\n", argv[1], leaf_dist);
 	get_nearest_leaf_complete_tree(tree, cur_node, &leaf_dist);
-	printf("Leaf dist in complete for node %s is %d\n", argv[1], leaf_dist);
+	printf("Leaf dist in complete tree for node %s is %d\n", argv[1], leaf_dist);
+	printf("Inorder traversal of the tree -\n");
+	inorder_traversal(tree);
+	reverse_tree(tree);
+	printf("Mirrored tree -\n");
+	inorder_traversal(tree);
+	reverse_tree(tree);
+	printf("Mirrored again tree -\n");
+	inorder_traversal(tree);
 }
 
 int print_binary_tree(node *root)
@@ -98,10 +106,8 @@ void get_nearest_leaf_down(node *my_node, unsigned int *leaf_dist)
 
 	if (left_dist < right_dist) {
 		*leaf_dist = left_dist + 1;
-		printf("Nearest leaf path %d\n", my_node->left->val);
 	} else {
 		*leaf_dist = right_dist + 1;
-		printf("Nearest leaf path %d\n", my_node->right->val);
 	}
 
 	return;
@@ -138,6 +144,44 @@ void get_nearest_leaf_complete_tree(node *root, node *my_node, unsigned int *lea
 		*leaf_dist = subtree_leaf_dist;
 	else
 		*leaf_dist = top_leaf_dist;
+
+	return;
+}
+
+void inorder_traversal(node *root)
+{
+	if (root->left == NULL && root->right == NULL) {
+		printf("%d\n", root->val);
+		return;
+	}
+
+	if (root->left)
+		inorder_traversal(root->left);
+
+	printf("%d\n", root->val);
+
+	if (root->right)
+		inorder_traversal(root->right);
+
+	return;
+}
+
+void reverse_tree(node *root)
+{
+	node *temp;
+
+	if (root->left == NULL && root->right == NULL)
+		return;
+
+	temp = root->left;
+	root->left = root->right;
+	root->right = temp;
+
+	if (root->left)
+		reverse_tree(root->left);
+
+	if (root->right)
+		reverse_tree(root->right);
 
 	return;
 }
